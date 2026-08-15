@@ -1,0 +1,18 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+final class PastikanPeran
+{
+    public function handle(Request $request, Closure $next, string ...$peran): Response
+    {
+        abort_unless($request->user()?->berperanSebagai(...$peran), 403);
+        return $next($request);
+    }
+}
