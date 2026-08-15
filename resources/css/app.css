@@ -14,3 +14,4 @@ dialog{border:0;padding:0;border-radius:14px;box-shadow:0 28px 90px #10141935;wi
 @media(max-width:500px){.entry-grid{grid-template-columns:1fr}.inline-edit{position:fixed;left:15px;right:15px;top:90px;width:auto}}
 @media print{.sidebar,.mobile-header,.page-head,.calculation{display:none!important}.page{margin:0;padding:0}.payslip-wrap{border:0;box-shadow:none}.payslip{border:0;max-width:none}}
 .button.danger{color:#a32828;border-color:#e8caca}.button.danger:hover{background:#fff0f0}
+dialog{margin:auto}

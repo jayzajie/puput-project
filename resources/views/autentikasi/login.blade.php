@@ -1,3 +1,63 @@
 <!doctype html>
-<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Login - GJP Payroll</title><link rel="preconnect" href="https://fonts.bunny.net"><link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800" rel="stylesheet">@vite(['resources/css/app.css','resources/js/app.js'])</head>
-<body><section class="login-screen"><div class="login-brand"><div class="login-logo"><span>G</span><span>J</span></div><h1>PT GADING JAYA PERKASA</h1><p>Sistem Informasi Penggajian</p><div class="site-silhouette" aria-hidden="true"><span class="excavator">◢</span><span class="truck">▰</span></div></div><div class="login-side"><form method="post" action="{{ route('masuk') }}" class="login-card">@csrf<h2>Login</h2><p>Masuk untuk melanjutkan</p><label>Email<input name="email" type="email" placeholder="Masukkan email Anda" value="{{ old('email','admin@gjp.co.id') }}" required autofocus></label><label>Password<span class="password-wrap"><input id="password" name="password" type="password" placeholder="Masukkan password Anda" value="password" required><button class="icon-button" type="button" data-toggle-password aria-label="Tampilkan password">◉</button></span></label>@error('email')<p class="field-error">{{ $message }}</p>@enderror<div class="login-options"><label class="check"><input name="ingat" type="checkbox" value="1"> Ingat saya</label><span></span></div><button class="button primary wide" type="submit">Login</button><p class="login-hint">Admin: admin@gjp.co.id · Supervisor: supervisor@gjp.co.id · Karyawan: karyawan@gjp.co.id</p></form><p class="copyright">© 2026 PT Gading Jaya Perkasa</p></div></section></body></html>
+<html lang="id">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Login - GJP Payroll</title>
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body>
+<section class="login-screen">
+    <div class="login-brand">
+        <div class="login-logo">
+            <span>G</span>
+            <span>J</span>
+        </div>
+        <h1>PT GADING JAYA PERKASA</h1>
+        <p>Sistem Informasi Penggajian</p>
+        <div class="site-silhouette" aria-hidden="true">
+            <span class="excavator">◢</span>
+            <span class="truck">▰</span>
+        </div>
+    </div>
+
+    <div class="login-side">
+        <form method="post" action="{{ route('masuk') }}" class="login-card">
+            @csrf
+            <h2>Login</h2>
+            <p>Masuk untuk melanjutkan</p>
+
+            <label>
+                Email
+                <input name="email" type="email" placeholder="Masukkan email Anda" value="{{ old('email', 'admin@gjp.co.id') }}" required autofocus>
+            </label>
+
+            <label>
+                Password
+                <span class="password-wrap">
+                    <input id="password" name="password" type="password" placeholder="Masukkan password Anda" value="password" required>
+                    <button class="icon-button" type="button" data-toggle-password aria-label="Tampilkan password">◉</button>
+                </span>
+            </label>
+
+            @error('email')
+                <p class="field-error">{{ $message }}</p>
+            @enderror
+
+            <div class="login-options">
+                <label class="check">
+                    <input name="ingat" type="checkbox" value="1"> Ingat saya
+                </label>
+                <span></span>
+            </div>
+
+            <button class="button primary wide" type="submit">Login</button>
+            <p class="login-hint">Admin: admin@gjp.co.id · Supervisor: supervisor@gjp.co.id · Karyawan: karyawan@gjp.co.id</p>
+        </form>
+        <p class="copyright">© 2026 PT Gading Jaya Perkasa</p>
+    </div>
+</section>
+</body>
+</html>
