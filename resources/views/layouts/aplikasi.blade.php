@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('judul', 'GJP Payroll')</title>
+    <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -14,7 +15,7 @@
 <div class="app-shell">
     <aside class="sidebar">
         <div class="brand">
-            <div class="brand-mark">GJ</div>
+            <img class="brand-logo" src="{{ asset('logo.png') }}" alt="Logo GJP">
             <strong>PT GADING<br>JAYA PERKASA</strong>
         </div>
 
@@ -55,22 +56,28 @@
             @endif
         </nav>
 
-        <form method="post" action="{{ route('keluar') }}">
-            @csrf
-            <button class="user-card" type="submit">
-                <span class="avatar">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
+        <div class="user-card">
+            <a class="user-profile-link" href="{{ route('profil.index') }}" aria-label="Buka profil">
+                @if(auth()->user()->foto_profil)
+                    <img class="avatar" src="{{ asset('storage/'.auth()->user()->foto_profil) }}" alt="Foto profil {{ auth()->user()->name }}">
+                @else
+                    <span class="avatar">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</span>
+                @endif
                 <span>
                     <strong>{{ auth()->user()->name }}</strong>
                     <small>{{ auth()->user()->email }}</small>
                 </span>
-                <span class="logout-symbol">↪</span>
-            </button>
-        </form>
+            </a>
+            <form class="logout-form" method="post" action="{{ route('keluar') }}">
+                @csrf
+                <button class="icon-button logout-symbol" type="submit" aria-label="Keluar">↪</button>
+            </form>
+        </div>
     </aside>
 
     <header class="mobile-header">
         <button id="menu-toggle" class="icon-button" type="button" aria-label="Buka menu">☰</button>
-        <div class="brand-mark">GJ</div>
+        <img class="brand-logo" src="{{ asset('logo.png') }}" alt="Logo GJP">
         <strong>GJP Payroll</strong>
     </header>
 

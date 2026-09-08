@@ -5,6 +5,7 @@ use App\Http\Controllers\DasborController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\RekapKerjaController;
 use App\Http\Controllers\RitaseController;
@@ -18,6 +19,9 @@ Route::middleware('guest')->group(function (): void {
 Route::middleware('auth')->group(function (): void {
     Route::post('/keluar', [AutentikasiController::class, 'keluar'])->name('keluar');
     Route::get('/dasbor', DasborController::class)->name('dasbor');
+    Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
+    Route::patch('/profil/foto', [ProfilController::class, 'ubahFoto'])->name('profil.foto');
+    Route::patch('/profil/password', [ProfilController::class, 'ubahPassword'])->name('profil.password');
     Route::get('/rekap-kerja', [RekapKerjaController::class, 'index'])->name('rekap.index');
     Route::middleware('peran:admin,karyawan')->group(function (): void {
         Route::get('/payroll', [PayrollController::class, 'index'])->name('payroll.index');

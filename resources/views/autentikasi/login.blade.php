@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Login - GJP Payroll</title>
+    <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -11,10 +12,7 @@
 <body>
 <section class="login-screen">
     <div class="login-brand">
-        <div class="login-logo">
-            <span>G</span>
-            <span>J</span>
-        </div>
+        <img class="login-logo" src="{{ asset('logo.png') }}" alt="Logo GJP">
         <h1>PT GADING JAYA PERKASA</h1>
         <p>Sistem Informasi Penggajian</p>
         <div class="site-silhouette" aria-hidden="true">
@@ -26,6 +24,7 @@
     <div class="login-side">
         <form method="post" action="{{ route('masuk') }}" class="login-card">
             @csrf
+            <img class="login-card-logo" src="{{ asset('logo.png') }}" alt="Logo GJP">
             <h2>Login</h2>
             <p>Masuk untuk melanjutkan</p>
 

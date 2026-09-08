@@ -13,7 +13,7 @@ final class Pengguna extends Authenticatable
     use Notifiable;
 
     protected $table = 'users';
-    protected $fillable = ['peran_id', 'karyawan_id', 'name', 'email', 'password', 'status', 'terakhir_login'];
+    protected $fillable = ['peran_id', 'karyawan_id', 'name', 'email', 'foto_profil', 'password', 'status', 'terakhir_login'];
     protected $hidden = ['password', 'remember_token'];
 
     protected function casts(): array
