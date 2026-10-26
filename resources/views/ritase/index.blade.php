@@ -54,38 +54,42 @@
 
     <section class="card rates-card">
         <h2>Tarif Coal</h2>
-        <table class="data-table">
-            <thead><tr><th>Rentang</th><th>Tarif</th></tr></thead>
-            <tbody>
-                @foreach($tarifCoal as $item)
-                    <tr>
-                        <td>{{ $item->jarak_dari }} – {{ $item->jarak_sampai ?? '∞' }}</td>
-                        <td>Rp {{ number_format($item->tarif, 0, ',', '.') }}/{{ $item->satuan }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="table-scroll">
+            <table class="data-table">
+                <thead><tr><th>Rentang</th><th>Tarif</th></tr></thead>
+                <tbody>
+                    @foreach($tarifCoal as $item)
+                        <tr>
+                            <td>{{ $item->jarak_dari }} – {{ $item->jarak_sampai ?? '∞' }}</td>
+                            <td>Rp {{ number_format($item->tarif, 0, ',', '.') }}/{{ $item->satuan }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
         <h2 class="spaced">Riwayat Coal</h2>
-        <table class="data-table">
-            <thead><tr><th>Tanggal</th><th>Ritase</th><th>Total</th><th>Aksi</th></tr></thead>
-            <tbody>
-                @foreach($coal as $item)
-                    <tr>
-                        <td>{{ $item->tanggal->format('d M Y') }}</td>
-                        <td>{{ $item->jumlah_ritase }}</td>
-                        <td>Rp {{ number_format($item->total_ritase, 0, ',', '.') }}</td>
-                        <td>
-                            <form method="post" action="{{ route('ritase.coal.hapus', $item) }}" onsubmit="return confirm('Hapus ritase coal?')">
-                                @csrf
-                                @method('delete')
-                                <button class="link-danger">Hapus</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="table-scroll">
+            <table class="data-table">
+                <thead><tr><th>Tanggal</th><th>Ritase</th><th>Total</th><th>Aksi</th></tr></thead>
+                <tbody>
+                    @foreach($coal as $item)
+                        <tr>
+                            <td>{{ $item->tanggal->format('d M Y') }}</td>
+                            <td>{{ $item->jumlah_ritase }}</td>
+                            <td>Rp {{ number_format($item->total_ritase, 0, ',', '.') }}</td>
+                            <td>
+                                <form method="post" action="{{ route('ritase.coal.hapus', $item) }}" onsubmit="return confirm('Hapus ritase coal?')">
+                                    @csrf
+                                    @method('delete')
+                                    <button class="link-danger">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </section>
 </div>
 
@@ -106,40 +110,44 @@
 
     <section class="card rates-card">
         <h2>Tarif Topsoil</h2>
-        <table class="data-table">
-            <thead><tr><th>Jarak</th><th>Tarif / BCM</th></tr></thead>
-            <tbody>
-                @foreach($tarifTopsoil as $item)
-                    <tr>
-                        <td>{{ $item->jarak_dari }} – {{ $item->jarak_sampai }} KM</td>
-                        <td>Rp {{ number_format($item->tarif, 0, ',', '.') }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <div class="table-scroll">
+            <table class="data-table">
+                <thead><tr><th>Jarak</th><th>Tarif / BCM</th></tr></thead>
+                <tbody>
+                    @foreach($tarifTopsoil as $item)
+                        <tr>
+                            <td>{{ $item->jarak_dari }} – {{ $item->jarak_sampai }} KM</td>
+                            <td>Rp {{ number_format($item->tarif, 0, ',', '.') }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
         <h2 class="spaced">Riwayat Topsoil</h2>
-        <table class="data-table">
-            <thead><tr><th>Tanggal</th><th>BCM</th><th>Total</th><th>Aksi</th></tr></thead>
-            <tbody>
-                @forelse($topsoil as $item)
-                    <tr>
-                        <td>{{ $item->tanggal->format('d M Y') }}</td>
-                        <td>{{ $item->bcm }}</td>
-                        <td>Rp {{ number_format($item->total_ritase, 0, ',', '.') }}</td>
-                        <td>
-                            <form method="post" action="{{ route('ritase.topsoil.hapus', $item) }}" onsubmit="return confirm('Hapus ritase topsoil?')">
-                                @csrf
-                                @method('delete')
-                                <button class="link-danger">Hapus</button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr><td colspan="4">Belum ada data.</td></tr>
-                @endforelse
-            </tbody>
-        </table>
+        <div class="table-scroll">
+            <table class="data-table">
+                <thead><tr><th>Tanggal</th><th>BCM</th><th>Total</th><th>Aksi</th></tr></thead>
+                <tbody>
+                    @forelse($topsoil as $item)
+                        <tr>
+                            <td>{{ $item->tanggal->format('d M Y') }}</td>
+                            <td>{{ $item->bcm }}</td>
+                            <td>Rp {{ number_format($item->total_ritase, 0, ',', '.') }}</td>
+                            <td>
+                                <form method="post" action="{{ route('ritase.topsoil.hapus', $item) }}" onsubmit="return confirm('Hapus ritase topsoil?')">
+                                    @csrf
+                                    @method('delete')
+                                    <button class="link-danger">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="4">Belum ada data.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </section>
 </div>
 @endsection

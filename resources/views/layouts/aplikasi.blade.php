@@ -15,7 +15,7 @@
 <div class="app-shell">
     <aside class="sidebar">
         <div class="brand">
-            <img class="brand-logo" src="{{ asset('logo.png') }}" alt="Logo GJP">
+            <img class="brand-logo" src="{{ asset('logo.png') }}" alt="Logo GJP" width="52" height="42">
             <strong>PT GADING<br>JAYA PERKASA</strong>
         </div>
 
@@ -74,10 +74,11 @@
             </form>
         </div>
     </aside>
+    <div id="sidebar-backdrop" class="sidebar-backdrop" hidden></div>
 
     <header class="mobile-header">
         <button id="menu-toggle" class="icon-button" type="button" aria-label="Buka menu">☰</button>
-        <img class="brand-logo" src="{{ asset('logo.png') }}" alt="Logo GJP">
+        <img class="brand-logo" src="{{ asset('logo.png') }}" alt="Logo GJP" width="44" height="34">
         <strong>GJP Payroll</strong>
     </header>
 

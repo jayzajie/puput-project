@@ -12,7 +12,7 @@
 <body>
 <section class="login-screen">
     <div class="login-brand">
-        <img class="login-logo" src="{{ asset('logo.png') }}" alt="Logo GJP">
+        <img class="login-logo" src="{{ asset('logo.png') }}" alt="Logo GJP" width="210" height="170">
         <h1>PT GADING JAYA PERKASA</h1>
         <p>Sistem Informasi Penggajian</p>
         <div class="site-silhouette" aria-hidden="true">
@@ -24,7 +24,7 @@
     <div class="login-side">
         <form method="post" action="{{ route('masuk') }}" class="login-card">
             @csrf
-            <img class="login-card-logo" src="{{ asset('logo.png') }}" alt="Logo GJP">
+            <img class="login-card-logo" src="{{ asset('logo.png') }}" alt="Logo GJP" width="92" height="74">
             <h2>Login</h2>
             <p>Masuk untuk melanjutkan</p>
 
