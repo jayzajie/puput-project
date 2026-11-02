@@ -26,7 +26,7 @@ final class PayrollController extends Controller
         $periode = PeriodeGaji::find($request->integer('periode_id')) ?? PeriodeGaji::latest('tahun')->latest('bulan')->firstOrFail();
         $payroll = Payroll::with(['karyawan', 'periode', 'potongan', 'slipGaji'])->where('karyawan_id', $karyawan->id)->where('periode_gaji_id', $periode->id)->first();
         if ($pengguna->berperanSebagai('karyawan') && $payroll?->status !== 'final') { $payroll = null; }
-        return view('payroll.index', ['payroll' => $payroll, 'karyawanAktif' => $karyawan, 'periodeAktif' => $periode, 'daftarKaryawan' => Karyawan::where('aktif', true)->get(), 'daftarPeriode' => PeriodeGaji::all()]);
+        return view('payroll.index', ['payroll' => $payroll, 'karyawanAktif' => $karyawan, 'periodeAktif' => $periode, 'daftarKaryawan' => Karyawan::where('aktif', true)->get(), 'daftarPeriode' => PeriodeGaji::orderByDesc('tahun')->orderByDesc('bulan')->get()]);
     }
 
     public function hitung(Request $request): RedirectResponse

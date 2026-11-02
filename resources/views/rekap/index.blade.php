@@ -9,8 +9,8 @@
         <p>Input dan verifikasi rekap kerja harian</p>
     </div>
 
-    @unless(auth()->user()->berperanSebagai('karyawan'))
-        <form method="get" class="head-actions">
+    <form method="get" class="head-actions">
+        @unless(auth()->user()->berperanSebagai('karyawan'))
             <label class="field">
                 Karyawan
                 <select name="karyawan_id" class="select-field">
@@ -19,17 +19,17 @@
                     @endforeach
                 </select>
             </label>
-            <label class="field">
-                Periode
-                <select name="periode_id" class="select-field">
-                    @foreach($daftarPeriode as $item)
-                        <option value="{{ $item->id }}" @selected($item->is($periodeAktif))>{{ $item->label() }}</option>
-                    @endforeach
-                </select>
-            </label>
-            <button class="button">Tampilkan</button>
-        </form>
-    @endunless
+        @endunless
+        <label class="field">
+            Periode
+            <select name="periode_id" class="select-field" onchange="this.form.submit()">
+                @foreach($daftarPeriode as $item)
+                    <option value="{{ $item->id }}" @selected($item->is($periodeAktif))>{{ $item->label() }}</option>
+                @endforeach
+            </select>
+        </label>
+        <button class="button">Tampilkan</button>
+    </form>
 </div>
 
 @unless(auth()->user()->berperanSebagai('karyawan'))

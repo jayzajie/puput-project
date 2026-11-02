@@ -73,6 +73,23 @@ final class CrudDanOtorisasiTest extends TestCase
         $this->assertDatabaseMissing('ritase_topsoil', ['id' => $topsoil->id]);
 
         $this->get(route('payroll.index'))->assertForbidden();
+
+        foreach (range(1, 6) as $index) {
+            Karyawan::create([
+                'nik' => 'GJP99000'.$index,
+                'nama' => 'Karyawan Tambahan '.$index,
+                'jabatan' => 'Operator',
+                'email' => "tambahan{$index}@gjp.co.id",
+                'gaji_pokok' => 4_000_000,
+                'aktif' => true,
+            ]);
+        }
+
+        $response = $this->get(route('dasbor'))->assertOk()->assertSee('Daftar Karyawan');
+        $paginator = $response->viewData('daftarKaryawan');
+        $this->assertSame(10, $paginator->perPage());
+        $this->assertCount(10, $paginator->items());
+        $this->assertSame(13, $paginator->total());
     }
 
     public function test_admin_mengelola_pengaturan_payroll_slip_dan_laporan(): void
@@ -138,9 +155,16 @@ final class CrudDanOtorisasiTest extends TestCase
         ]);
         $slipLain = SlipGaji::create(['payroll_id' => $payrollLain->id, 'tanggal_cetak' => now(), 'status' => 'tersedia']);
 
-        $this->actingAs($penggunaKaryawan)->get(route('dasbor'))->assertOk()->assertSee('Taufik')->assertDontSee('Supervisor');
-        $this->get(route('rekap.index', ['karyawan_id' => $supervisor->karyawan_id]))->assertOk()->assertDontSee('Dedi Kurniawan');
-        $this->get(route('payroll.index'))->assertOk()->assertSee('Lihat / Cetak Slip Gaji');
+        $periodeKedua = PeriodeGaji::create([
+            'bulan' => 5, 'tahun' => 2026,
+            'tanggal_mulai' => '2026-05-01', 'tanggal_selesai' => '2026-05-31',
+            'status' => 'selesai',
+        ]);
+
+        $this->actingAs($penggunaKaryawan)->get(route('dasbor'))->assertOk()->assertSee('Taufik')->assertDontSee('Supervisor')->assertSee('05/2026');
+        $this->get(route('dasbor', ['periode_id' => $periodeKedua->id]))->assertOk()->assertViewHas('periode', fn ($item) => $item->is($periodeKedua));
+        $this->get(route('rekap.index', ['karyawan_id' => $supervisor->karyawan_id, 'periode_id' => $periodeKedua->id]))->assertOk()->assertDontSee('Dedi Kurniawan')->assertViewHas('periodeAktif', fn ($item) => $item->is($periodeKedua));
+        $this->get(route('payroll.index', ['periode_id' => $periode->id]))->assertOk()->assertSee('Lihat / Cetak Slip Gaji');
         $this->get(route('slip.show', $payrollSendiri->slipGaji))->assertOk();
         $this->get(route('slip.show', $slipLain))->assertForbidden();
         $this->get(route('ritase.index'))->assertForbidden();

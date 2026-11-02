@@ -8,12 +8,18 @@
         <h1>Dashboard</h1>
         <p>Selamat datang, {{ auth()->user()->name }} 👋</p>
     </div>
-    <div class="head-actions">
-        <span class="field">
+    <form method="get" class="head-actions">
+        <label class="field">
             Periode
-            <strong class="select-field">{{ $periode?->label() ?? '-' }}</strong>
-        </span>
-    </div>
+            <select name="periode_id" class="select-field" onchange="this.form.submit()">
+                @forelse($daftarPeriode as $item)
+                    <option value="{{ $item->id }}" @selected($periode && $item->is($periode))>{{ $item->label() }}</option>
+                @empty
+                    <option value="">-</option>
+                @endforelse
+            </select>
+        </label>
+    </form>
 </div>
 
 @php
@@ -71,5 +77,49 @@
             </table>
         </div>
     </section>
+@else
+    <section class="card table-card">
+        <h2 class="section-title table-title">Daftar Karyawan</h2>
+        <div class="table-scroll">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>NIK</th>
+                        <th>Nama</th>
+                        <th>Jabatan</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($daftarKaryawan as $item)
+                        <tr>
+                            <td>{{ $daftarKaryawan->firstItem() + $loop->index }}</td>
+                            <td>{{ $item->nik }}</td>
+                            <td>
+                                <strong>{{ $item->nama }}</strong>
+                                <small class="subtext">{{ $item->email }}</small>
+                            </td>
+                            <td>{{ $item->jabatan }}</td>
+                            <td>
+                                <span class="status {{ $item->aktif ? '' : 'gray' }}">{{ $item->aktif ? 'Aktif' : 'Nonaktif' }}</span>
+                            </td>
+                            <td>
+                                <div class="row-actions">
+                                    <a class="button" href="{{ route('rekap.index', ['karyawan_id' => $item->id]) }}">Rekap Kerja</a>
+                                    <a class="button" href="{{ route('ritase.index', ['karyawan_id' => $item->id]) }}">Ritase</a>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="6" class="empty-panel">Belum ada data karyawan.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <div class="pagination">{{ $daftarKaryawan->links() }}</div>
 @endif
 @endsection

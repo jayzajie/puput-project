@@ -19,17 +19,29 @@ final class DasborController extends Controller
     {
         $pengguna = $request->user();
         $karyawanId = $pengguna->berperanSebagai('karyawan') ? $pengguna->karyawan_id : null;
-        $periode = PeriodeGaji::latest('tahun')->latest('bulan')->first();
+        $daftarPeriode = PeriodeGaji::orderByDesc('tahun')->orderByDesc('bulan')->get();
+        $periode = PeriodeGaji::find($request->integer('periode_id')) ?? $daftarPeriode->first();
         $payroll = Payroll::with(['karyawan', 'periode'])
+            ->when($periode, fn ($query) => $query->where('periode_gaji_id', $periode->id))
             ->when($pengguna->berperanSebagai('karyawan'), fn ($query) => $query->where('karyawan_id', $karyawanId)->where('status', 'final'))
             ->when($pengguna->berperanSebagai('supervisor'), fn ($query) => $query->whereRaw('1 = 0'))
             ->latest()->take(6)->get();
-        $rekap = RekapKerja::query()->when($karyawanId, fn ($query) => $query->where('karyawan_id', $karyawanId));
-        $coal = RitaseCoal::query()->when($karyawanId, fn ($query) => $query->where('karyawan_id', $karyawanId));
-        $topsoil = RitaseTopsoil::query()->when($karyawanId, fn ($query) => $query->where('karyawan_id', $karyawanId));
+        $rekap = RekapKerja::query()
+            ->when($karyawanId, fn ($query) => $query->where('karyawan_id', $karyawanId))
+            ->when($periode, fn ($query) => $query->whereBetween('tanggal', [$periode->tanggal_mulai, $periode->tanggal_selesai]));
+        $coal = RitaseCoal::query()
+            ->when($karyawanId, fn ($query) => $query->where('karyawan_id', $karyawanId))
+            ->when($periode, fn ($query) => $query->whereBetween('tanggal', [$periode->tanggal_mulai, $periode->tanggal_selesai]));
+        $topsoil = RitaseTopsoil::query()
+            ->when($karyawanId, fn ($query) => $query->where('karyawan_id', $karyawanId))
+            ->when($periode, fn ($query) => $query->whereBetween('tanggal', [$periode->tanggal_mulai, $periode->tanggal_selesai]));
         return view('dasbor', [
             'periode' => $periode,
+            'daftarPeriode' => $daftarPeriode,
             'payroll' => $payroll,
+            'daftarKaryawan' => $pengguna->berperanSebagai('supervisor')
+                ? Karyawan::query()->latest()->paginate(10)->withQueryString()
+                : null,
             'mode' => $pengguna->peran->nama,
             'jumlahKaryawan' => $karyawanId ? 1 : Karyawan::where('aktif', true)->count(),
             'totalGaji' => $payroll->sum('gaji_kotor'),
